@@ -5,18 +5,14 @@ const fruit = ['Apple', 'Apricot', 'Avocado 🥑', 'Banana', 'Bilberry', 'Blackb
 
 //Searches the fruit given a string and gives an array of the possible 
 function search(str) {
-	let results = fruit.filter(element =>{
-		if(element.toLowerCase().indexOf(str.toLowerCase()) != -1){
-			return element
-		}
-	});
+	let results = fruit.filter(element => element.toLowerCase().indexOf(str.toLowerCase()) != -1);
 	return results;
 }
 
 //Handles every updates when a key goes back up
 function searchHandler(e) {
 	e.preventDefault();
-	while(suggestions.firstChild){
+	while (suggestions.firstChild) {
 		suggestions.removeChild(suggestions.lastChild);
 	}
 	showSuggestions(e.target.value);
@@ -24,36 +20,35 @@ function searchHandler(e) {
 
 //Makes the suggestions list and highlight the bolded words
 function showSuggestions(inputVal) {
-	let fruits = search(inputVal);
-	fruits.forEach(element =>{
-		let index = element.toLowerCase().indexOf(inputVal.toLowerCase()); //get the index where the letter first appears
+	search(inputVal).forEach(fruit => {
+		let index = fruit.toLowerCase().indexOf(inputVal.toLowerCase()); //get the index where the letter first appears
 		const suggestion = document.createElement("li");
-		const first = document.createElement("span");
-		const strong = document.createElement("strong"); // use of strong to get the bolded words
-		const second = document.createElement("span");
+		const stringBeforeBold = document.createElement("span");
+		const bold = document.createElement("strong"); // use of strong to get the bolded words
+		const stringAfterBold = document.createElement("span");
 		//Text manipulation to get the bolded letters to show on the search bar
-		first.innerText = element.slice(0,index);
-		strong.innerText = element.slice(index, index+inputVal.length);
-		second.innerText = element.slice(index+inputVal.length);
-		suggestion.appendChild(first);
-		suggestion.appendChild(strong);
-		suggestion.appendChild(second);
+		stringBeforeBold.innerText = fruit.slice(0, index);
+		bold.innerText = fruit.slice(index, index + inputVal.length);
+		stringAfterBold.innerText = fruit.slice(index + inputVal.length);
+		suggestion.appendChild(stringBeforeBold);
+		suggestion.appendChild(bold);
+		suggestion.appendChild(stringAfterBold);
 		suggestions.appendChild(suggestion);
 
 	})
-	
+
 }
 
-//changes the search bar with the cosen word
+//changes the search bar with the chosen word
 function useSuggestion(e) {
-	if(e.target.nodeName === "STRONG" || e.target.nodeName === "SPAN"){ //makesure that it works wherever in the li element
+	if (e.target.nodeName === "STRONG" || e.target.nodeName === "SPAN") { //makesure that it works wherever in the li element
 		input.value = e.target.parentNode.innerText;
-	} 
-	else{
+	}
+	else {
 		input.value = e.target.innerText;
 	}
 
-	while(suggestions.firstChild){
+	while (suggestions.firstChild) {
 		suggestions.removeChild(suggestions.lastChild);
 	}
 
